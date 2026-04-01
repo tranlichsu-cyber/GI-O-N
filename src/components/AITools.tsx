@@ -43,9 +43,7 @@ const aiDirectoryData = [
 
 const quickPrompts = [
   { icon: FileQuestion, title: "Tạo Đề Thi", desc: "Trắc nghiệm & Tự luận", prompt: "Đóng vai chuyên gia ra đề thi. Hãy tạo 5 câu hỏi trắc nghiệm (4 đáp án, có 1 đáp án đúng) và 2 câu hỏi tự luận để kiểm tra học sinh Tiểu học về chủ đề: [Nhập tên bài học/chủ đề]. Yêu cầu cung cấp đáp án chi tiết." },
-  { icon: Users, title: "Thư Gửi Phụ Huynh", desc: "Viết thông báo", prompt: "Đóng vai giáo viên chủ nhiệm thân thiện và tinh tế. Viết một thông báo gửi vào nhóm Zalo phụ huynh lớp [Nhập tên lớp] về việc: [Nhập nội dung cần thông báo]. Giọng văn ấm áp, rõ ràng và lịch sự." },
-  { icon: Lightbulb, title: "Trò Chơi Khởi Động", desc: "5 phút Warm-up", prompt: "Thiết kế một trò chơi khởi động (Warm-up) kéo dài 5 phút cho học sinh Tiểu học trước khi học bài: [Nhập tên bài học]. Trò chơi cần đơn giản, vui nhộn và không cần chuẩn bị nhiều đồ dùng học tập." },
-  { icon: ShieldAlert, title: "Xử Lý Tình Huống", desc: "Tâm lý học đường", prompt: "Đóng vai chuyên gia tâm lý học đường. Tôi đang gặp tình huống sau ở lớp: [Mô tả tình huống học sinh vi phạm hoặc cần giúp đỡ]. Hãy đưa ra 3 bước xử lý khéo léo, mang tính giáo dục và thấu cảm nhất." }
+  { icon: Users, title: "Thư Gửi Phụ Huynh", desc: "Viết thông báo", prompt: "Đóng vai giáo viên chủ nhiệm thân thiện và tinh tế. Viết một thông báo gửi vào nhóm Zalo phụ huynh lớp [Nhập tên lớp] về việc: [Nhập nội dung cần thông báo]. Giọng văn ấm áp, rõ ràng và lịch sự." }
 ];
 
 interface ChatMessage {
