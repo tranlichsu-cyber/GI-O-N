@@ -14,7 +14,8 @@ import {
   Share2,
   Heart,
   Key,
-  Home as HomeIcon
+  Home as HomeIcon,
+  GraduationCap
 } from 'lucide-react';
 import { cn } from './lib/utils';
 import Home from './components/Home';
@@ -22,8 +23,10 @@ import Planner from './components/Planner';
 import Worksheet from './components/Worksheet';
 import Game from './components/Game';
 import AITools from './components/AITools';
-
-export type AppTab = 'home' | 'planner' | 'worksheet' | 'game' | 'aitools';
+import Classroom from './components/Classroom';
+import StudentDashboard from './components/StudentDashboard';
+import Auth from './components/Auth';
+import { User as UserType, AppTab } from './types';
 
 interface Toast {
   id: string;
@@ -36,21 +39,65 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [hasApiKey, setHasApiKey] = useState(true);
+  const [user, setUser] = useState<UserType | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+        if (data.user) {
+          setUser(data.user);
+          if (data.user.role === 'student') {
+            setActiveTab('student_dashboard');
+          }
+        }
+      } catch (err) {
+        console.error('Auth check failed');
+      }
+    };
+    checkAuth();
+  }, []);
 
   useEffect(() => {
     const checkApiKey = async () => {
+      // Prioritize environment variable if available (e.g. in AI Studio preview)
+      if (process.env.GEMINI_API_KEY) {
+        setHasApiKey(true);
+        return;
+      }
+
       // @ts-ignore
       if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
         // @ts-ignore
         const hasKey = await window.aistudio.hasSelectedApiKey();
         setHasApiKey(hasKey);
       } else {
-        // Fallback for local dev or if aistudio is not available
-        setHasApiKey(!!process.env.GEMINI_API_KEY);
+        setHasApiKey(false);
       }
     };
     checkApiKey();
   }, []);
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setUser(null);
+    setActiveTab('home');
+    showToast("Đã đăng xuất thành công!", "info");
+  };
+
+  const handleTabChange = (tab: AppTab) => {
+    if (tab === 'classroom' && !user) {
+      setShowAuth(true);
+      return;
+    }
+    if (tab === 'classroom' && user?.role === 'student') {
+      setActiveTab('student_dashboard');
+      return;
+    }
+    setActiveTab(tab);
+  };
 
   const openKeySelector = async () => {
     // @ts-ignore
@@ -121,7 +168,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-xl font-medium text-xs overflow-x-auto">
             <button 
-              onClick={() => setActiveTab('home')} 
+              onClick={() => handleTabChange('home')} 
               className={cn(
                 "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
                 activeTab === 'home' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -130,7 +177,7 @@ export default function App() {
               <HomeIcon className="w-4 h-4" /> Trang Chủ
             </button>
             <button 
-              onClick={() => setActiveTab('planner')} 
+              onClick={() => handleTabChange('planner')} 
               className={cn(
                 "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
                 activeTab === 'planner' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -139,7 +186,7 @@ export default function App() {
               <BookOpenCheck className="w-4 h-4" /> Soạn Giáo Án
             </button>
             <button 
-              onClick={() => setActiveTab('worksheet')} 
+              onClick={() => handleTabChange('worksheet')} 
               className={cn(
                 "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
                 activeTab === 'worksheet' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -148,7 +195,7 @@ export default function App() {
               <FileText className="w-4 h-4" /> Tạo Phiếu
             </button>
             <button 
-              onClick={() => setActiveTab('game')} 
+              onClick={() => handleTabChange('game')} 
               className={cn(
                 "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
                 activeTab === 'game' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -157,7 +204,7 @@ export default function App() {
               <Gamepad2 className="w-4 h-4" /> Trò Chơi
             </button>
             <button 
-              onClick={() => setActiveTab('aitools')} 
+              onClick={() => handleTabChange('aitools')} 
               className={cn(
                 "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
                 activeTab === 'aitools' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
@@ -165,6 +212,25 @@ export default function App() {
             >
               <BotMessageSquare className="w-4 h-4" /> Trợ lý AI
             </button>
+            <button 
+              onClick={() => handleTabChange('classroom')} 
+              className={cn(
+                "nav-tab px-3 py-1.5 rounded-lg flex items-center gap-1.5 whitespace-nowrap",
+                activeTab === 'classroom' ? "active" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+              )}
+            >
+              <GraduationCap className="w-4 h-4" /> Lớp Học
+            </button>
+            
+            {user && (
+              <button 
+                onClick={handleLogout}
+                className="ml-2 px-3 py-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 transition-colors flex items-center gap-1.5 text-xs font-bold"
+              >
+                Đăng xuất
+              </button>
+            )}
+            
             <button 
               onClick={toggleDarkMode} 
               className="ml-2 px-2 py-1.5 rounded-lg text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" 
@@ -188,12 +254,30 @@ export default function App() {
 
       {/* CONTENT */}
       <main className="flex-grow">
-        {activeTab === 'home' && <Home onNavigate={setActiveTab} />}
+        {activeTab === 'home' && <Home onNavigate={handleTabChange} />}
         {activeTab === 'planner' && <Planner showToast={showToast} hasApiKey={hasApiKey} openKeySelector={openKeySelector} />}
         {activeTab === 'worksheet' && <Worksheet showToast={showToast} hasApiKey={hasApiKey} openKeySelector={openKeySelector} />}
         {activeTab === 'game' && <Game showToast={showToast} />}
         {activeTab === 'aitools' && <AITools showToast={showToast} hasApiKey={hasApiKey} openKeySelector={openKeySelector} />}
+        {activeTab === 'classroom' && user && user.role === 'teacher' && <Classroom user={user} showToast={showToast} />}
+        {activeTab === 'student_dashboard' && user && user.role === 'student' && <StudentDashboard user={user} showToast={showToast} />}
       </main>
+
+      {showAuth && (
+        <Auth 
+          onSuccess={(u) => {
+            setUser(u);
+            setShowAuth(false);
+            if (u.role === 'student') {
+              setActiveTab('student_dashboard');
+            } else {
+              setActiveTab('classroom');
+            }
+            showToast(`Chào mừng ${u.role === 'student' ? 'em' : 'thầy/cô'} ${u.name}!`, "ok");
+          }} 
+          onClose={() => setShowAuth(false)} 
+        />
+      )}
 
       {/* FOOTER */}
       <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-6 no-print">

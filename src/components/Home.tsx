@@ -10,7 +10,7 @@ import {
   Gamepad2, 
   Bot 
 } from 'lucide-react';
-import { AppTab } from '../App';
+import { AppTab } from '../types';
 
 interface HomeProps {
   onNavigate: (tab: AppTab) => void;

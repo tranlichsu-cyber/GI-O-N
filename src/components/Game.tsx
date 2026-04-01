@@ -16,13 +16,10 @@ import {
   VolumeX,
   Trophy,
   Star,
-  Gamepad2,
-  FileText
+  Gamepad2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import confetti from 'canvas-confetti';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { cn } from '../lib/utils';
 import { db } from '../lib/firebase';
 import { ref, set, update, onValue, off, push, get } from 'firebase/database';
@@ -134,20 +131,8 @@ export default function Game({ showToast }: GameProps) {
   const [showEggModal, setShowEggModal] = useState(false);
   const [showScrollModal, setShowScrollModal] = useState(false);
   const [showScratchOffModal, setShowScratchOffModal] = useState(false);
-  const [showLessonPlanModal, setShowLessonPlanModal] = useState(false);
   const [wheelRotation, setWheelRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [lessonPlanContent, setLessonPlanContent] = useState('');
-  const [isGeneratingPlan, setIsGeneratingPlan] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState('Lịch sử và Địa lí 4 (Cánh Diều)');
-
-  const SUBJECTS = [
-    'Lịch sử và Địa lí 4 (Cánh Diều)',
-    'Lịch sử và Địa lí 5 (Cánh Diều)',
-    'Khoa học 5 (Cánh Diều)',
-    'Đạo đức 5 (Cánh Diều)',
-    'Khác'
-  ];
 
   // Refs for intervals and listeners
   const timerIv = useRef<any>(null);
@@ -438,51 +423,6 @@ export default function Game({ showToast }: GameProps) {
     goScreen('room');
   };
 
-  const generateLessonPlan = async () => {
-    if (!questions.length) return showToast('Cần có câu hỏi để soạn giáo án!', 'err');
-    setIsGeneratingPlan(true);
-    setShowLessonPlanModal(true);
-    setLessonPlanContent('Đang soạn giáo án chi tiết...');
-    
-    try {
-      const topic = selectedGame?.name || "Chủ đề học tập";
-      const questionsText = questions.map((q, i) => `Câu ${i+1}: ${q.q}`).join('\n');
-      
-      const prompt = `Hãy soạn một giáo án thật chi tiết cho bài học có chủ đề: "${topic}". 
-      Môn học: ${selectedSubject}.
-      Nội dung bài học bao gồm các câu hỏi sau:
-      ${questionsText}
-      
-      Yêu cầu quan trọng:
-      - Nếu môn học là một trong các bộ sách Cánh Diều, hãy bám sát nội dung và cấu trúc chương trình của bộ sách đó.
-      - Giáo án phải trình bày theo 4 bước hoạt động chuẩn sư phạm: Khởi động, Khám phá, Luyện tập, Vận dụng.
-      
-      Giáo án cần bao gồm các phần:
-      1. Mục tiêu bài học (Kiến thức, Kỹ năng, Thái độ, Năng lực cần phát triển theo chương trình GDPT 2018).
-      2. Chuẩn bị (Giáo viên, Học sinh).
-      3. Các hoạt động dạy học chi tiết:
-         - Hoạt động 1: Khởi động (Tạo tâm thế, kết nối kiến thức cũ).
-         - Hoạt động 2: Khám phá (Hình thành kiến thức mới).
-         - Hoạt động 3: Luyện tập (Thực hành kiến thức vừa học).
-         - Hoạt động 4: Vận dụng (Áp dụng vào thực tiễn).
-      4. Đặc biệt, hãy thiết kế 2 trò chơi tương tác sáng tạo lồng ghép trong các hoạt động trên để giúp học sinh phát triển các năng lực cốt lõi.
-      5. Gợi ý cách sử dụng trò chơi "${topic}" trong tiết học để tăng tính tương tác.
-      
-      Hãy viết bằng tiếng Việt, trình bày thật chi tiết, khoa học và đẹp mắt bằng Markdown.`;
-
-      const res = await callGeminiAPI(
-        [{ parts: [{ text: prompt }] }],
-        "Bạn là một chuyên gia giáo dục, am hiểu sâu sắc bộ sách giáo khoa Cánh Diều, chuyên soạn giáo án chi tiết, sáng tạo và chuẩn sư phạm theo chương trình GDPT 2018.",
-        "text/plain"
-      );
-      setLessonPlanContent(res);
-    } catch (e: any) {
-      setLessonPlanContent("Lỗi khi soạn giáo án: " + e.message);
-    } finally {
-      setIsGeneratingPlan(false);
-    }
-  };
-
   useEffect(() => {
     if (screen === 'lb') {
       const duration = 3 * 1000;
@@ -660,22 +600,7 @@ export default function Game({ showToast }: GameProps) {
           <div className="game-hdr bg-white dark:bg-slate-800 border-b-2 border-slate-200 dark:border-slate-700 p-3 flex items-center justify-between">
             <div className="font-baloo font-black text-base text-pink-500">SOẠN CÂU HỎI</div>
             <div className="flex gap-1.5 items-center">
-              <div className="flex items-center gap-1.5 mr-1">
-                <select 
-                  className="bg-slate-100 dark:bg-slate-700 border-none rounded-lg px-2 py-1 text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-200 outline-none max-w-[120px] sm:max-w-none"
-                  value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                >
-                  {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-              </div>
               <button className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-bold" onClick={() => goScreen('teacher-pick')}>Hủy</button>
-              <button 
-                className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 rounded-lg px-2.5 py-1 text-xs font-bold flex items-center gap-1" 
-                onClick={generateLessonPlan}
-              >
-                <FileText className="w-3 h-3" /> Giáo án
-              </button>
               {intendedMode === 'online' ? (
                 <button className="bg-cyan-500 text-white rounded-lg px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-[0_3px_0_#0891b2]" onClick={launchOnline}>
                   <Rocket className="w-3 h-3" /> Tạo phòng
@@ -1355,53 +1280,6 @@ export default function Game({ showToast }: GameProps) {
         </div>
       )}
 
-      {/* LESSON PLAN MODAL */}
-      {showLessonPlanModal && (
-        <div className="fixed inset-0 bg-black/50 z-[110] flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-4xl h-[85vh] overflow-hidden shadow-2xl flex flex-col">
-            <div className="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-indigo-600 text-white">
-              <h3 className="font-bold flex items-center gap-2"><FileText className="w-5 h-5" /> Giáo Án Chi Tiết</h3>
-              <button onClick={() => setShowLessonPlanModal(false)} className="text-white/80 hover:text-white"><X className="w-6 h-6" /></button>
-            </div>
-            <div className="p-6 overflow-y-auto flex-1 bg-slate-50 dark:bg-slate-900">
-              {isGeneratingPlan ? (
-                <div className="flex flex-col items-center justify-center h-full gap-4">
-                  <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-                  <p className="text-slate-500 font-bold animate-pulse">AI đang soạn giáo án chi tiết cho bạn...</p>
-                </div>
-              ) : (
-                <div className="markdown-body prose dark:prose-invert max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {lessonPlanContent}
-                  </ReactMarkdown>
-                </div>
-              )}
-            </div>
-            <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex justify-end gap-3 bg-white dark:bg-slate-800">
-              <button 
-                className="px-6 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold hover:bg-slate-200 transition-all"
-                onClick={() => setShowLessonPlanModal(false)}
-              >
-                Đóng
-              </button>
-              <button 
-                className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md transition-all flex items-center gap-2"
-                onClick={() => {
-                  const blob = new Blob([lessonPlanContent], { type: 'text/markdown' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `Giao_an_${selectedGame?.name || 'bai_hoc'}.md`;
-                  a.click();
-                  showToast('Đã tải xuống giáo án!', 'ok');
-                }}
-              >
-                Tải xuống (.md)
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       {/* AI MODAL */}
       {showAiModal && (
         <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">

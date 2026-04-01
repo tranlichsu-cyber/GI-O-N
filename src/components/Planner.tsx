@@ -64,6 +64,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
   const [period, setPeriod] = useState('Tiết 1');
   const [integrateAI, setIntegrateAI] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isContinuing, setIsContinuing] = useState(false);
   const [autoSaveStatus, setAutoSaveStatus] = useState(false);
   const [oldLessonContent, setOldLessonContent] = useState<string>('');
   const [uploadedFileName, setUploadedFileName] = useState<string>('');
@@ -149,6 +150,57 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
     const isValidLesson = specificLesson && specificLesson !== "-- Không chọn --";
     if (!uploadedFileName && !isValidLesson) return showToast("Vui lòng chọn Tên bài hoặc tải file giáo án cũ", "err");
     
+    const generateTemplate = () => {
+      const isLib = subject === 'Tiết đọc thư viện';
+      const gradeText = grade || "(Khối chưa chọn)";
+      const subjectText = subject || "(Môn chưa chọn)";
+      const lessonText = specificLesson || "(Bài chưa chọn)";
+      
+      let template = `
+        <h1 style="text-align: center;">GIÁO ÁN ${subjectText.toUpperCase()} ${gradeText.toUpperCase()}</h1>
+        <h2 style="text-align: center;">TÊN BÀI: ${lessonText}</h2>
+        <p style="text-align: center;"><strong>Tiết: ${period}</strong></p>
+        
+        <table border="1" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #f2f2f2;">
+              <th style="padding: 10px; width: 50%;">Hoạt động của Giáo viên</th>
+              <th style="padding: 10px; width: 50%;">Hoạt động của Học sinh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 10px;"><strong>1. Khởi động:</strong><br/>- Ổn định lớp.<br/>- Kiểm tra bài cũ.<br/>- Giới thiệu bài mới.</td>
+              <td style="padding: 10px;">- Cả lớp trật tự.<br/>- Trả lời câu hỏi.<br/>- Lắng nghe.</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px;"><strong>2. Khám phá:</strong><br/>- Giảng giải kiến thức mới.<br/>- Đặt câu hỏi gợi mở.</td>
+              <td style="padding: 10px;">- Quan sát, lắng nghe.<br/>- Thảo luận nhóm.</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px;"><strong>3. Luyện tập:</strong><br/>- Hướng dẫn làm bài tập.<br/>- Sửa lỗi sai cho HS.</td>
+              <td style="padding: 10px;">- Thực hành cá nhân.<br/>- Trình bày kết quả.</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px;"><strong>4. Vận dụng:</strong><br/>- Liên hệ thực tế.<br/>- Dặn dò về nhà.</td>
+              <td style="padding: 10px;">- Chia sẻ trải nghiệm.<br/>- Ghi chép bài tập.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="color: #666; font-style: italic; font-size: 10px; margin-top: 20px;">* Lưu ý: Đây là mẫu giáo án cơ bản. Vui lòng kích hoạt AI để nhận giáo án chi tiết và sáng tạo hơn.</p>
+      `;
+      
+      if (editorRef.current) {
+        editorRef.current.innerHTML = template;
+      }
+      showToast("Đã tạo mẫu giáo án cơ bản!", "info");
+    };
+
+    if (!hasApiKey && !process.env.GEMINI_API_KEY) {
+      generateTemplate();
+      return;
+    }
+
     setIsLoading(true);
     
     const isLib = subject === 'Tiết đọc thư viện';
@@ -193,12 +245,15 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
     const sysPrompt = `Bạn là Chuyên gia thiết kế Bài giảng Cấp Tiểu học theo Chương trình GDPT 2018 (sách Cánh Diều). Bối cảnh: Trường TH Lý Tự Trọng - Sông Công, Thái Nguyên. 
     CẤU TRÚC PHẢI CÓ: ${headerPrompt}
     ${structurePrompt}${aiIntegrationPrompt}${oldLessonPrompt} 
-    QUY TẮC TỐI THƯỢNG: Khi có DỮ LIỆU GIÁO ÁN CŨ, file đó là nguồn tin cậy duy nhất. Bạn không được soạn theo kiến thức chung của mình mà phải trích xuất đúng nội dung từ file đó ra. Giữ nguyên từng dấu phẩy, dấu chấm của giáo viên.
-    Nếu là soạn cả tuần, hãy liệt kê tất cả các bài dạy theo thứ tự trong file.
-    Trả về CHỈ mã HTML nguyên bản, sử dụng thẻ <table> cho các hoạt động dạy học (Cột 1: Hoạt động của GV, Cột 2: Hoạt động của HS). KHÔNG dùng markdown block (\`\`\`html).`;
+    QUY TẮC TỐI THƯỢNG (BẮT BUỘC): 
+    1. Khi có DỮ LIỆU GIÁO ÁN CŨ, file đó là NGUỒN TIN CẬY DUY NHẤT. Bạn KHÔNG ĐƯỢC soạn theo kiến thức chung của mình.
+    2. GIỮ NGUYÊN 100% CÂU TỪ, DẤU CHẤM, DẤU PHẨY của giáo viên trong file cũ. KHÔNG ĐƯỢC TỰ Ý THAY ĐỔI, TÓM TẮT HAY VIẾT LẠI THEO Ý BẠN.
+    3. NHIỆM VỤ CỦA BẠN CHỈ LÀ: Trích xuất nội dung gốc ra và CHÈN THÊM (lồng ghép) các nội dung Năng lực số/AI vào các vị trí phù hợp.
+    4. PHẢI SOẠN ĐẦY ĐỦ, KHÔNG ĐƯỢC BỎ SÓT BẤT KỲ MỤC NÀO CỦA GIÁO ÁN GỐC.
+    5. Trả về CHỈ mã HTML nguyên bản, sử dụng thẻ <table> cho các hoạt động dạy học. KHÔNG dùng markdown block (\`\`\`html).`;
 
     try {
-      const htmlStr = await callGeminiAPI([{ parts: [{ text: `Hãy soạn giáo án chi tiết cho bài: "${specificLesson}".` }] }], sysPrompt);
+      const htmlStr = await callGeminiAPI([{ parts: [{ text: `Hãy trích xuất và lồng ghép giáo án cho bài: "${lessonText}". YÊU CẦU: Giữ nguyên văn bản gốc từ file cũ, chỉ chèn thêm phần tích hợp AI và Năng lực số.` }] }], sysPrompt);
       if (editorRef.current) {
         editorRef.current.innerHTML = htmlStr.replace(/^```html\s*/i, '').replace(/\s*```$/i, '').trim();
       }
@@ -212,6 +267,34 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleContinue = async () => {
+    if (!editorRef.current || !editorRef.current.innerHTML.trim()) return;
+    
+    setIsContinuing(true);
+    showToast("AI đang soạn tiếp phần còn thiếu...", "info");
+
+    const currentContent = editorRef.current.innerHTML;
+    const sysPrompt = `Bạn là Chuyên gia thiết kế Bài giảng. Bạn đang soạn dở một giáo án và bị ngắt quãng. 
+    Dưới đây là PHẦN ĐÃ SOẠN:
+    ${currentContent}
+    
+    NHIỆM VỤ: Hãy viết tiếp PHẦN CÒN LẠI của giáo án này dựa trên dữ liệu cũ đã cung cấp trước đó. 
+    CHỈ TRẢ VỀ PHẦN TIẾP THEO (không lặp lại phần đã có). Trả về mã HTML nguyên bản.`;
+
+    try {
+      const htmlStr = await callGeminiAPI([{ parts: [{ text: "Hãy viết tiếp phần còn lại của giáo án này." }] }], sysPrompt);
+      if (editorRef.current) {
+        const cleanHtml = htmlStr.replace(/^```html\s*/i, '').replace(/\s*```$/i, '').trim();
+        editorRef.current.innerHTML += cleanHtml;
+      }
+      showToast("Đã soạn tiếp thành công!", "ok");
+    } catch (err: any) {
+      showToast("Lỗi khi soạn tiếp: " + err.message, "err");
+    } finally {
+      setIsContinuing(false);
     }
   };
 
@@ -405,9 +488,19 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
               <button onClick={() => document.execCommand('underline')} className="p-1.5 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm rounded-lg text-slate-600 dark:text-slate-400 transition-all"><Underline className="w-4 h-4" /></button>
               <div className="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-2"></div>
               <span className={cn("text-[10px] text-slate-400 font-medium italic hidden md:inline ml-2 transition-opacity", autoSaveStatus ? "opacity-100" : "opacity-40")}>Tự động lưu...</span>
-              <button onClick={clearEditor} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-500 hover:text-red-600 rounded-lg text-xs font-semibold ml-auto flex items-center gap-1.5 transition-all">
-                <Eraser className="w-3.5 h-3.5" /> Xóa bảng
-              </button>
+              
+              <div className="ml-auto flex items-center gap-2">
+                <button 
+                  onClick={handleContinue} 
+                  disabled={isContinuing || isLoading}
+                  className="p-1.5 px-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-all disabled:opacity-50"
+                >
+                  <Sparkles className="w-3 h-3" /> {isContinuing ? 'Đang soạn tiếp...' : 'Viết tiếp phần thiếu'}
+                </button>
+                <button onClick={clearEditor} className="p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-500 hover:text-red-600 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+                  <Eraser className="w-3.5 h-3.5" /> Xóa bảng
+                </button>
+              </div>
             </div>
             
             {isLoading && (

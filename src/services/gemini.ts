@@ -21,6 +21,7 @@ export async function callGeminiAPI(
     config: {
       systemInstruction: systemInstruction || undefined,
       responseMimeType,
+      maxOutputTokens: 8192, // Increased limit for long lesson plans
     },
   });
 
