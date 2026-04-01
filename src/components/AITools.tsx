@@ -42,8 +42,7 @@ const aiDirectoryData = [
 ];
 
 const quickPrompts = [
-  { icon: FileQuestion, title: "Tạo Đề Thi", desc: "Trắc nghiệm & Tự luận", prompt: "Đóng vai chuyên gia ra đề thi. Hãy tạo 5 câu hỏi trắc nghiệm (4 đáp án, có 1 đáp án đúng) và 2 câu hỏi tự luận để kiểm tra học sinh Tiểu học về chủ đề: [Nhập tên bài học/chủ đề]. Yêu cầu cung cấp đáp án chi tiết." },
-  { icon: Users, title: "Thư Gửi Phụ Huynh", desc: "Viết thông báo", prompt: "Đóng vai giáo viên chủ nhiệm thân thiện và tinh tế. Viết một thông báo gửi vào nhóm Zalo phụ huynh lớp [Nhập tên lớp] về việc: [Nhập nội dung cần thông báo]. Giọng văn ấm áp, rõ ràng và lịch sự." }
+  { icon: FileQuestion, title: "Tạo Đề Thi", desc: "Trắc nghiệm & Tự luận", prompt: "Đóng vai chuyên gia ra đề thi. Hãy tạo 5 câu hỏi trắc nghiệm (4 đáp án, có 1 đáp án đúng) và 2 câu hỏi tự luận để kiểm tra học sinh Tiểu học về chủ đề: [Nhập tên bài học/chủ đề]. Yêu cầu cung cấp đáp án chi tiết." }
 ];
 
 interface ChatMessage {

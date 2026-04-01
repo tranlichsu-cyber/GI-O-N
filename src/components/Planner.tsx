@@ -83,9 +83,9 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
     try {
       if (file.name.endsWith('.docx')) {
         const arrayBuffer = await file.arrayBuffer();
-        const result = await mammoth.extractRawText({ arrayBuffer });
+        const result = await mammoth.convertToHtml({ arrayBuffer });
         setOldLessonContent(result.value);
-        showToast("Đã đọc nội dung file Word thành công!", "ok");
+        showToast("Đã đọc nội dung file Word thành công (bao gồm ảnh & link)!", "ok");
       } else if (file.name.endsWith('.txt')) {
         const text = await file.text();
         setOldLessonContent(text);
@@ -157,10 +157,23 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
       const lessonText = specificLesson || "(Bài chưa chọn)";
       
       let template = `
-        <h1 style="text-align: center;">GIÁO ÁN ${subjectText.toUpperCase()} ${gradeText.toUpperCase()}</h1>
+        <h1 style="text-align: center;">KẾ HOẠCH BÀI DẠY ${subjectText.toUpperCase()} ${gradeText.toUpperCase()}</h1>
         <h2 style="text-align: center;">TÊN BÀI: ${lessonText}</h2>
         <p style="text-align: center;"><strong>Tiết: ${period}</strong></p>
         
+        <div style="margin-bottom: 20px;">
+          <p><strong>I. YÊU CẦU CẦN ĐẠT:</strong></p>
+          <p>- Về phẩm chất: ...</p>
+          <p>- Về năng lực: ...</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <p><strong>II. ĐỒ DÙNG DẠY HỌC:</strong></p>
+          <p>- Giáo viên: ...</p>
+          <p>- Học sinh: ...</p>
+        </div>
+
+        <p><strong>III. CÁC HOẠT ĐỘNG DẠY HỌC CHỦ YẾU:</strong></p>
         <table border="1" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr style="background-color: #f2f2f2;">
@@ -170,24 +183,29 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
           </thead>
           <tbody>
             <tr>
-              <td style="padding: 10px;"><strong>1. Khởi động:</strong><br/>- Ổn định lớp.<br/>- Kiểm tra bài cũ.<br/>- Giới thiệu bài mới.</td>
-              <td style="padding: 10px;">- Cả lớp trật tự.<br/>- Trả lời câu hỏi.<br/>- Lắng nghe.</td>
+              <td style="padding: 10px;"><strong>1. Hoạt động Mở đầu:</strong><br/>- Ổn định lớp.<br/>- Kết nối/Khởi động.</td>
+              <td style="padding: 10px;">- Trật tự.<br/>- Tham gia hoạt động.</td>
             </tr>
             <tr>
-              <td style="padding: 10px;"><strong>2. Khám phá:</strong><br/>- Giảng giải kiến thức mới.<br/>- Đặt câu hỏi gợi mở.</td>
-              <td style="padding: 10px;">- Quan sát, lắng nghe.<br/>- Thảo luận nhóm.</td>
+              <td style="padding: 10px;"><strong>2. Hoạt động Hình thành kiến thức mới:</strong><br/>- Trải nghiệm, khám phá.<br/>- Phân tích, hình thành kiến thức.</td>
+              <td style="padding: 10px;">- Quan sát, thảo luận.<br/>- Rút ra bài học.</td>
             </tr>
             <tr>
-              <td style="padding: 10px;"><strong>3. Luyện tập:</strong><br/>- Hướng dẫn làm bài tập.<br/>- Sửa lỗi sai cho HS.</td>
-              <td style="padding: 10px;">- Thực hành cá nhân.<br/>- Trình bày kết quả.</td>
+              <td style="padding: 10px;"><strong>3. Hoạt động Luyện tập, thực hành:</strong><br/>- Hướng dẫn thực hành.<br/>- Sửa lỗi, nhận xét.</td>
+              <td style="padding: 10px;">- Làm bài tập.<br/>- Trình bày kết quả.</td>
             </tr>
             <tr>
-              <td style="padding: 10px;"><strong>4. Vận dụng:</strong><br/>- Liên hệ thực tế.<br/>- Dặn dò về nhà.</td>
-              <td style="padding: 10px;">- Chia sẻ trải nghiệm.<br/>- Ghi chép bài tập.</td>
+              <td style="padding: 10px;"><strong>4. Hoạt động Vận dụng, trải nghiệm:</strong><br/>- Liên hệ thực tế.<br/>- Giải quyết vấn đề.</td>
+              <td style="padding: 10px;">- Chia sẻ thực tế.<br/>- Ứng dụng kiến thức.</td>
             </tr>
           </tbody>
         </table>
-        <p style="color: #666; font-style: italic; font-size: 10px; margin-top: 20px;">* Lưu ý: Đây là mẫu giáo án cơ bản. Hệ thống AI đã sẵn sàng để hỗ trợ bạn soạn giáo án chi tiết hơn.</p>
+
+        <div style="margin-top: 20px;">
+          <p><strong>IV. ĐIỀU CHỈNH SAU BÀI DẠY (NẾU CÓ):</strong></p>
+          <p>...</p>
+        </div>
+        <p style="color: #666; font-style: italic; font-size: 10px; margin-top: 20px;">* Lưu ý: Đây là mẫu giáo án cơ bản theo Công văn 2345/BGDĐT-GDTH. Hệ thống AI đã sẵn sàng để hỗ trợ bạn soạn giáo án chi tiết hơn.</p>
       `;
       
       if (editorRef.current) {
@@ -236,21 +254,38 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
 
     const structurePrompt = oldLessonContent 
       ? 'Sử dụng cấu trúc hoạt động của giáo án cũ trong file.' 
-      : (isLib ? 'Chia 4 Hoạt động: Trước đọc, Trong đọc, Sau đọc, Mở rộng.' : 'Chia các Hoạt động: Khởi động, Khám phá, Luyện tập, Vận dụng.');
+      : (isLib ? 'Chia 4 Hoạt động: Trước đọc, Trong đọc, Sau đọc, Mở rộng.' : 'CẤU TRÚC THEO CÔNG VĂN 2345: I. Yêu cầu cần đạt (Phẩm chất, Năng lực); II. Đồ dùng dạy học; III. Các hoạt động dạy học chủ yếu (1. Mở đầu; 2. Hình thành kiến thức mới; 3. Luyện tập, thực hành; 4. Vận dụng, trải nghiệm); IV. Điều chỉnh sau bài dạy.');
 
     const headerPrompt = isWholeWeek 
-      ? '<h1>GIÁO ÁN CẢ TUẦN (DỰA THEO FILE CŨ)</h1>'
-      : `<h1>GIÁO ÁN ${subjectText.toUpperCase()} ${gradeText.toUpperCase()}</h1><h2>TÊN BÀI: ${lessonText}</h2><p><strong>Tiết: ${period}</strong></p>`;
+      ? '<h1>KẾ HOẠCH BÀI DẠY CẢ TUẦN (DỰA THEO FILE CŨ)</h1>'
+      : `<h1>KẾ HOẠCH BÀI DẠY ${subjectText.toUpperCase()} ${gradeText.toUpperCase()}</h1><h2>TÊN BÀI: ${lessonText}</h2><p><strong>Tiết: ${period}</strong></p>`;
 
-    const sysPrompt = `Bạn là Chuyên gia thiết kế Bài giảng Cấp Tiểu học theo Chương trình GDPT 2018 (sách Cánh Diều). Bối cảnh: Trường TH Lý Tự Trọng - Sông Công, Thái Nguyên. 
-    CẤU TRÚC PHẢI CÓ: ${headerPrompt}
-    ${structurePrompt}${aiIntegrationPrompt}${oldLessonPrompt} 
+    const sysPrompt = `Bạn là Chuyên gia thiết kế Bài giảng Cấp Tiểu học theo Chương trình GDPT 2018 và Công văn 2345/BGDĐT-GDTH. Bối cảnh: Trường TH Lý Tự Trọng - Sông Công, Thái Nguyên. 
+    
+    CẤU TRÚC VÀ PHONG CÁCH SOẠN THẢO (BẮT BUỘC THEO MẪU):
+    1. TIÊU ĐỀ: TUẦN..., CHỦ ĐỀ..., BÀI... (T1/T2...)
+    2. I. YÊU CẦU CẦN ĐẠT: 
+       - 1. Năng lực đặc thù: (Ghi rõ các năng lực liên quan đến môn học).
+       - 2. Năng lực chung: (Tự chủ tự học, Giao tiếp hợp tác, Giải quyết vấn đề sáng tạo).
+       - 3. Phẩm chất: (Nhân ái, Chăm chỉ, Trách nhiệm...).
+    3. II. ĐỒ DÙNG DẠY HỌC: (Giáo viên, Học sinh).
+    4. III. HOẠT ĐỘNG DẠY HỌC: 
+       - Sử dụng bảng <table> với 2 cột: "Hoạt động của giáo viên" và "Hoạt động của học sinh".
+       - Các hoạt động chính: 
+         + 1. Khởi động: (Mục tiêu, Cách tiến hành - thường có trò chơi hoặc câu hỏi dẫn dắt).
+         + 2. Hoạt động (Khám phá/Hình thành kiến thức): (Mục tiêu, Cách tiến hành - chia nhỏ thành Hoạt động 1, Hoạt động 2...).
+         + 3. Luyện tập, thực hành.
+         + 4. Vận dụng trải nghiệm.
+    5. IV. ĐIỀU CHỈNH SAU BÀI DẠY: (Để trống phần nội dung).
+
     QUY TẮC TỐI THƯỢNG (BẮT BUỘC): 
-    1. Khi có DỮ LIỆU GIÁO ÁN CŨ, file đó là NGUỒN TIN CẬY DUY NHẤT. Bạn KHÔNG ĐƯỢC soạn theo kiến thức chung của mình.
-    2. GIỮ NGUYÊN 100% CÂU TỪ, DẤU CHẤM, DẤU PHẨY của giáo viên trong file cũ. KHÔNG ĐƯỢC TỰ Ý THAY ĐỔI, TÓM TẮT HAY VIẾT LẠI THEO Ý BẠN.
-    3. NHIỆM VỤ CỦA BẠN CHỈ LÀ: Trích xuất nội dung gốc ra và CHÈN THÊM (lồng ghép) các nội dung Năng lực số/AI vào các vị trí phù hợp.
-    4. PHẢI SOẠN ĐẦY ĐỦ, KHÔNG ĐƯỢC BỎ SÓT BẤT KỲ MỤC NÀO CỦA GIÁO ÁN GỐC.
-    5. Trả về CHỈ mã HTML nguyên bản, sử dụng thẻ <table> cho các hoạt động dạy học. KHÔNG dùng markdown block (\`\`\`html).`;
+    - Trình bày chi tiết, ngôn ngữ sư phạm chuẩn mực.
+    - KHI CÓ DỮ LIỆU GIÁO ÁN CŨ: Bạn đóng vai trò là người "Sao chép và Lồng ghép". Bạn PHẢI GIỮ NGUYÊN 100% NỘI DUNG, TỪNG CÂU CHỮ, DẤU CHẤM, DẤU PHẨY của giáo viên trong file cũ. 
+    - TUYỆT ĐỐI KHÔNG ĐƯỢC: Tóm tắt, viết lại, sửa đổi câu từ, hay bỏ bớt bất kỳ thông tin nào từ file gốc. 
+    - NHIỆM VỤ DUY NHẤT: Trích xuất văn bản gốc và CHÈN THÊM (lồng ghép) các nội dung Năng lực số/AI vào các vị trí phù hợp mà không làm thay đổi văn bản cũ.
+    - BẮT BUỘC GIỮ LẠI: Nếu trong dữ liệu cũ có hình ảnh (thẻ <img>) hoặc đường link (thẻ <a>), bạn PHẢI giữ nguyên 100% các thẻ này.
+    - BÔI ĐẬM các đề mục và nội dung quan trọng.
+    - Trả về CHỈ mã HTML nguyên bản, sử dụng thẻ <table> cho các hoạt động dạy học.`;
 
     try {
       const htmlStr = await callGeminiAPI([{ parts: [{ text: `Hãy trích xuất và lồng ghép giáo án cho bài: "${lessonText}". YÊU CẦU: Giữ nguyên văn bản gốc từ file cũ, chỉ chèn thêm phần tích hợp AI và Năng lực số.` }] }], sysPrompt);
@@ -311,7 +346,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `GiaoAn_AI.doc`;
+    link.download = `KeHoachBaiDay_AI.doc`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -418,10 +453,10 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                 <p className="text-[11px] text-indigo-400 mt-1.5 ml-6 leading-relaxed">Tự động lồng ghép Mã chỉ báo (VD: 1.1.CB1a), Giáo dục AI, Công dân số vào các hoạt động Dạy học.</p>
               </div>
 
-              {/* Upload Giáo án cũ */}
+              {/* Upload Kế hoạch bài dạy cũ */}
               <div className="p-4 bg-blue-50/10 border border-blue-100 dark:border-blue-900/50 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">Giáo án cũ (Tham khảo)</label>
+                  <label className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">Kế hoạch cũ (Tham khảo)</label>
                   {uploadedFileName && (
                     <button onClick={removeUploadedFile} className="text-red-500 hover:text-red-600 transition-colors">
                       <Trash2 className="w-3.5 h-3.5" />
