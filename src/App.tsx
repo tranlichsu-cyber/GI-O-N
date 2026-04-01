@@ -147,7 +147,7 @@ export default function App() {
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-400 flex items-center justify-center gap-2">
               <AlertCircle className="w-3 h-3" />
               AI chưa được kích hoạt cho phiên bản chia sẻ. 
-              <button onClick={openKeySelector} className="underline hover:text-amber-800 ml-1">Nhấn vào đây để kích hoạt miễn phí</button>
+              <button onClick={openKeySelector} className="underline hover:text-amber-800 ml-1">Nhấn vào đây để kích hoạt</button>
             </p>
           </div>
         )}
@@ -161,7 +161,6 @@ export default function App() {
                 <h1 className="font-bold text-base tracking-tight text-slate-800 dark:text-slate-100 leading-tight">
                   Giáo Viên <span className="text-blue-600">4.0</span>
                 </h1>
-                <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase tracking-tighter border border-emerald-200 dark:border-emerald-800">Miễn Phí</span>
               </div>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Hệ Sinh Thái Thông Minh</p>
             </div>
@@ -238,16 +237,6 @@ export default function App() {
             >
               {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            <button 
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                showToast("Đã sao chép liên kết web miễn phí!", "ok");
-              }}
-              className="ml-1 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1.5 text-xs font-bold"
-              title="Chia sẻ web"
-            >
-              <Share2 className="w-3.5 h-3.5" /> <span className="hidden md:inline">Chia sẻ</span>
-            </button>
           </div>
         </div>
       </header>
@@ -288,8 +277,6 @@ export default function App() {
           </div>
           <div className="flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
             <span>Phiên bản 4.0.0</span>
-            <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-            <span>Hoàn toàn miễn phí</span>
           </div>
         </div>
       </footer>

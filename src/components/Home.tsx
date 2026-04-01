@@ -45,7 +45,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 onClick={() => onNavigate('planner')}
                 className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold shadow-xl shadow-blue-200 dark:shadow-none transition-all hover:scale-105 flex items-center justify-center gap-2"
               >
-                Bắt đầu ngay miễn phí <ArrowRight className="w-5 h-5" />
+                Bắt đầu ngay <ArrowRight className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
                 <Shield className="w-4 h-4 text-emerald-500" />
@@ -105,7 +105,7 @@ export default function Home({ onNavigate }: HomeProps) {
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
               <div>
                 <div className="text-5xl font-black mb-2">100%</div>
-                <div className="text-blue-100 font-bold uppercase tracking-widest text-xs">Miễn phí vĩnh viễn</div>
+                <div className="text-blue-100 font-bold uppercase tracking-widest text-xs">Sẵn sàng hỗ trợ</div>
               </div>
               <div>
                 <div className="text-5xl font-black mb-2">30s</div>
