@@ -187,7 +187,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
             </tr>
           </tbody>
         </table>
-        <p style="color: #666; font-style: italic; font-size: 10px; margin-top: 20px;">* Lưu ý: Đây là mẫu giáo án cơ bản. Vui lòng kích hoạt AI để nhận giáo án chi tiết và sáng tạo hơn.</p>
+        <p style="color: #666; font-style: italic; font-size: 10px; margin-top: 20px;">* Lưu ý: Đây là mẫu giáo án cơ bản. Hệ thống AI đã sẵn sàng để hỗ trợ bạn soạn giáo án chi tiết hơn.</p>
       `;
       
       if (editorRef.current) {

@@ -32,7 +32,7 @@ export default function Home({ onNavigate }: HomeProps) {
               <Sparkles className="w-3 h-3" />
               Công nghệ AI hàng đầu cho giáo dục
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+            <h1 className="font-heading text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
               Hệ Sinh Thái <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Giáo Viên 4.0</span>
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-medium">
@@ -163,7 +163,7 @@ function FeatureCard({ icon, title, desc, onClick, color }: { icon: React.ReactN
       <div className="mb-6 p-3 bg-slate-50 dark:bg-slate-900 w-fit rounded-2xl group-hover:scale-110 transition-transform">
         {icon}
       </div>
-      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-3">{title}</h3>
+      <h3 className="font-heading text-xl font-black text-slate-900 dark:text-white mb-3">{title}</h3>
       <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 font-medium">
         {desc}
       </p>

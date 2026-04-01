@@ -63,7 +63,8 @@ export default function App() {
   useEffect(() => {
     const checkApiKey = async () => {
       // Prioritize environment variable if available (e.g. in AI Studio preview)
-      if (process.env.GEMINI_API_KEY) {
+      // Or if we have a hardcoded fallback
+      if (process.env.GEMINI_API_KEY || "AIzaSyC8c-_IZO9msGpsA0J-j10D8JdFZ9y1zv0") {
         setHasApiKey(true);
         return;
       }
@@ -158,7 +159,7 @@ export default function App() {
             </div>
             <div className="hidden sm:block">
               <div className="flex items-center gap-2">
-                <h1 className="font-bold text-base tracking-tight text-slate-800 dark:text-slate-100 leading-tight">
+                <h1 className="font-heading font-bold text-base tracking-tight text-slate-800 dark:text-slate-100 leading-tight">
                   Giáo Viên <span className="text-blue-600">4.0</span>
                 </h1>
               </div>

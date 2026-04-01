@@ -1,17 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-inter: 'Inter', sans-serif;
-  --font-baloo: 'Baloo 2', cursive;
-  --font-nunito: 'Nunito', sans-serif;
+  --font-sans: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, Arial, sans-serif;
+  --font-heading: 'Baloo 2', 'Arial', sans-serif;
+  --font-game: 'Nunito', sans-serif;
 }
 
 @layer base {
+  html {
+    font-size: 16px;
+  }
+
   body {
-    font-family: var(--font-inter);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     background-color: #f8fafc;
     color: #1e293b;
     transition: background-color 0.3s, color 0.3s;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 
   body.dark {
@@ -31,6 +43,7 @@
 @layer components {
   .nav-tab {
     transition: all 0.2s ease-in-out;
+    font-weight: 500;
   }
 
   .nav-tab.active {
@@ -43,6 +56,10 @@
   .dark .nav-tab.active {
     background-color: #3b82f6;
     color: #ffffff;
+  }
+
+  .prose {
+    font-family: var(--font-sans);
   }
 
   .prose table {
@@ -90,7 +107,7 @@
     max-width: 88%;
     padding: 12px 16px;
     border-radius: 16px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 14px;
     width: fit-content;
@@ -142,7 +159,7 @@
     --text: #1E293B;
     --muted: #64748B;
     --dim: #F1F5F9;
-    font-family: var(--font-nunito);
+    font-family: var(--font-game);
   }
 
   .dark .game-theme {

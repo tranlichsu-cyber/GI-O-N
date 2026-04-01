@@ -166,7 +166,7 @@ export default function AITools({ showToast, hasApiKey, openKeySelector }: AIToo
                 <LayoutGrid className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="font-bold text-xl text-slate-800 dark:text-slate-100">Danh Bạ Công Cụ AI Giáo Dục</h2>
+                <h2 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Danh Bạ Công Cụ AI Giáo Dục</h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Khuyến nghị theo CT Tập huấn Bộ GDĐT</p>
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function AITools({ showToast, hasApiKey, openKeySelector }: AIToo
                   <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full"></div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-800 dark:text-slate-100 leading-tight">Trợ Lý AI Sư Phạm</h3>
+                  <h3 className="font-heading font-bold text-slate-800 dark:text-slate-100 leading-tight">Trợ Lý AI Sư Phạm</h3>
                   <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Sẵn sàng hỗ trợ chuyên môn</p>
                 </div>
               </div>
