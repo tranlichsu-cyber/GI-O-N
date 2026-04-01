@@ -89,7 +89,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'teacher_register' && (
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1.5">Họ và Tên</label>
+                <label className="block text-xs font-bold text-black dark:text-slate-300 uppercase mb-1.5">Họ và Tên</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input 
@@ -97,7 +97,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     placeholder="Nguyễn Văn A"
                   />
                 </div>
@@ -106,7 +106,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
 
             {mode === 'student_login' ? (
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1.5">Mã Học Sinh</label>
+                <label className="block text-xs font-bold text-black dark:text-slate-300 uppercase mb-1.5">Mã Học Sinh</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input 
@@ -114,14 +114,14 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
                     required
                     value={studentCode}
                     onChange={(e) => setStudentCode(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     placeholder="HS123456"
                   />
                 </div>
               </div>
             ) : (
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1.5">Email</label>
+                <label className="block text-xs font-bold text-black dark:text-slate-300 uppercase mb-1.5">Email</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input 
@@ -129,7 +129,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     placeholder="teacher@school.edu"
                   />
                 </div>
@@ -137,7 +137,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
             )}
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase mb-1.5">Mật Khẩu</label>
+              <label className="block text-xs font-bold text-black dark:text-slate-300 uppercase mb-1.5">Mật Khẩu</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
@@ -145,7 +145,7 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                   placeholder="••••••••"
                 />
               </div>
@@ -154,7 +154,9 @@ export default function Auth({ onSuccess, onClose }: AuthProps) {
             {error && (
               <div className={cn(
                 "p-3 rounded-lg text-xs font-medium text-center",
-                error.includes('thành công') ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+                error.includes('thành công') 
+                  ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400" 
+                  : "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
               )}>
                 {error}
               </div>

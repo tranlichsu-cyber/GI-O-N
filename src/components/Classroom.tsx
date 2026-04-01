@@ -252,7 +252,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                       <input 
                         type="text" 
                         placeholder="Tìm kiếm học sinh..."
-                        className="pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                        className="pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-200"
                       />
                     </div>
                   </div>
@@ -294,7 +294,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         required
                         value={newStudentName}
                         onChange={(e) => setNewStudentName(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200"
                         placeholder="VD: Trần Văn Bình"
                       />
                     </div>
@@ -305,7 +305,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         required
                         value={newStudentCode}
                         onChange={(e) => setNewStudentCode(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200"
                         placeholder="VD: HS001"
                       />
                     </div>
@@ -316,7 +316,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         required
                         value={newStudentPassword}
                         onChange={(e) => setNewStudentPassword(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200"
                         placeholder="Mật khẩu đăng nhập"
                       />
                     </div>
@@ -385,7 +385,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         required
                         value={newAssignTitle}
                         onChange={(e) => setNewAssignTitle(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200"
                         placeholder="VD: Bài tập Toán tuần 5"
                       />
                     </div>
@@ -395,7 +395,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         rows={4}
                         value={newAssignContent}
                         onChange={(e) => setNewAssignContent(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200 resize-none"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200 resize-none"
                         placeholder="Nhập yêu cầu bài tập cho học sinh..."
                       />
                     </div>
@@ -405,7 +405,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                         type="date" 
                         value={newAssignDate}
                         onChange={(e) => setNewAssignDate(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm dark:text-slate-200"
+                        className="w-full px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm text-black dark:text-slate-200"
                       />
                     </div>
 
@@ -444,7 +444,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                             placeholder={`Câu hỏi ${idx + 1}`}
                             value={q.q}
                             onChange={(e) => updateQuestion(idx, 'q', e.target.value)}
-                            className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs outline-none"
+                            className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-xs outline-none text-black dark:text-slate-200"
                           />
                           {q.qType === 'mcq' ? (
                             <div className="grid grid-cols-2 gap-2">
@@ -461,7 +461,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                                     placeholder={`Đáp án ${oIdx + 1}`}
                                     value={opt}
                                     onChange={(e) => updateOption(idx, oIdx, e.target.value)}
-                                    className="flex-1 px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-[10px] outline-none"
+                                    className="flex-1 px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-[10px] outline-none text-black dark:text-slate-200"
                                   />
                                 </div>
                               ))}
@@ -472,7 +472,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                               placeholder="Đáp án đúng (để máy tự chấm)"
                               value={q.correctText}
                               onChange={(e) => updateQuestion(idx, 'correctText', e.target.value)}
-                              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] outline-none"
+                              className="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] outline-none text-black dark:text-slate-200"
                             />
                           )}
                         </div>
@@ -632,7 +632,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                   required
                   value={newClassName}
                   onChange={(e) => setNewClassName(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-200"
                   placeholder="VD: Lớp 4A - Toán"
                 />
               </div>
@@ -642,7 +642,7 @@ export default function Classroom({ user, showToast }: ClassroomProps) {
                   rows={3}
                   value={newClassDesc}
                   onChange={(e) => setNewClassDesc(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all dark:text-slate-200 resize-none"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/30 transition-all text-black dark:text-slate-200 resize-none"
                   placeholder="Nhập mô tả ngắn về lớp học..."
                 />
               </div>

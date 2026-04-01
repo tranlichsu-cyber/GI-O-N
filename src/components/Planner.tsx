@@ -353,7 +353,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                   <select 
                     value={grade} 
                     onChange={(e) => setGrade(e.target.value)} 
-                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none dark:text-slate-200"
+                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none text-black dark:text-slate-200"
                   >
                     <option value="">-- Không chọn --</option>
                     {["Lớp 1", "Lớp 2", "Lớp 3", "Lớp 4", "Lớp 5"].map(g => <option key={g} value={g}>{g}</option>)}
@@ -364,7 +364,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                   <select 
                     value={subject} 
                     onChange={(e) => setSubject(e.target.value)} 
-                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none dark:text-slate-200"
+                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none text-black dark:text-slate-200"
                   >
                     <option value="">-- Không chọn --</option>
                     {["Hoạt động trải nghiệm", "Toán", "Tiếng Việt", "Đạo đức", "Khoa học", "Lịch sử và Địa lí", "Tiết đọc thư viện"].map(s => <option key={s} value={s}>{s}</option>)}
@@ -376,7 +376,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                 <select 
                   value={topic} 
                   onChange={(e) => setTopic(e.target.value)} 
-                  className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none dark:text-slate-200"
+                  className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none text-black dark:text-slate-200"
                 >
                   {topics.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -387,7 +387,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                   <select 
                     value={specificLesson} 
                     onChange={(e) => setSpecificLesson(e.target.value)} 
-                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none dark:text-slate-200"
+                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none text-black dark:text-slate-200"
                   >
                     {lessons.map(l => <option key={l} value={l}>{l}</option>)}
                   </select>
@@ -398,7 +398,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
                     type="text" 
                     value={period} 
                     onChange={(e) => setPeriod(e.target.value)} 
-                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none dark:text-slate-200" 
+                    className="w-full p-2.5 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none text-black dark:text-slate-200" 
                     placeholder="VD: Tiết 1" 
                   />
                 </div>
@@ -519,7 +519,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
             <div 
               ref={editorRef}
               contentEditable="true" 
-              className="p-8 flex-grow outline-none prose dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 text-sm overflow-y-auto"
+              className="p-8 flex-grow outline-none prose dark:prose-invert max-w-none text-black dark:text-slate-200 text-sm overflow-y-auto"
               suppressContentEditableWarning
             >
               <div className="flex flex-col items-center justify-center h-full text-slate-400 mt-32">

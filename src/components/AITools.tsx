@@ -304,7 +304,7 @@ export default function AITools({ showToast, hasApiKey, openKeySelector }: AIToo
                       handleSend();
                     }
                   }}
-                  className="flex-1 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm font-medium focus:border-blue-400 focus:bg-white dark:focus:bg-slate-800 transition-all resize-none h-14 dark:text-slate-200" 
+                  className="flex-1 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-sm font-medium focus:border-blue-400 focus:bg-white dark:focus:bg-slate-800 transition-all resize-none h-14 text-black dark:text-slate-200" 
                   placeholder="Nhập câu hỏi..." 
                 />
                 

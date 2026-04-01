@@ -234,7 +234,7 @@ export default function AssignmentDo({ assignment, submission, onClose, showToas
               value={answers[currentIdx] || ''}
               onChange={(e) => !isReviewMode && handleAnswer(e.target.value)}
               readOnly={isReviewMode}
-              className="w-full h-48 p-6 bg-slate-50 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-700 rounded-2xl outline-none focus:border-blue-600 transition-all dark:text-slate-200 resize-none font-medium"
+              className="w-full h-48 p-6 bg-slate-50 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-700 rounded-2xl outline-none focus:border-blue-600 transition-all text-black dark:text-slate-200 resize-none font-medium"
               placeholder={isReviewMode ? "" : "Nhập câu trả lời của em tại đây..."}
             />
           )}

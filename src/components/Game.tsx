@@ -451,7 +451,7 @@ export default function Game({ showToast }: GameProps) {
     <div className="game-theme min-h-[calc(100vh-64px)] relative overflow-hidden">
       {/* LANDING */}
       {screen === 'landing' && (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-4 text-center max-w-3xl mx-auto w-full animate-in fade-in duration-500 relative">
+        <div className="flex flex-col items-center justify-start pt-20 min-h-[calc(100vh-64px)] p-4 text-center max-w-3xl mx-auto w-full animate-in fade-in duration-500 relative">
           <div className="absolute top-0 right-0 p-4">
             <button 
               className="p-2.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all group"
@@ -514,7 +514,7 @@ export default function Game({ showToast }: GameProps) {
               <ArrowLeft className="w-3.5 h-3.5" /> Quay lại
             </button>
           </div>
-          <div className="flex flex-col items-center justify-center flex-1 p-4 text-center max-w-3xl mx-auto w-full">
+          <div className="flex flex-col items-center justify-start pt-20 flex-1 p-4 text-center max-w-3xl mx-auto w-full">
             <h2 className="font-baloo text-2xl font-black text-slate-800 dark:text-slate-100 mb-5">Hình thức tổ chức</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-xl">
               <motion.div 
@@ -557,7 +557,7 @@ export default function Game({ showToast }: GameProps) {
               <ArrowLeft className="w-3.5 h-3.5" /> Quay lại
             </button>
           </div>
-          <div className="p-4 max-w-4xl mx-auto w-full">
+          <div className="p-4 pt-20 max-w-4xl mx-auto w-full">
             <p className="font-bold text-slate-400 text-[10px] uppercase tracking-wider mb-3">Lựa chọn Minigame</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {(intendedMode === 'offline' ? OFFLINE_GAMES : ONLINE_GAMES).map((g, i) => {
@@ -633,13 +633,13 @@ export default function Game({ showToast }: GameProps) {
                     placeholder="Nhập câu hỏi..." 
                     value={q.q}
                     onChange={(e) => updateQData(i, 'q', e.target.value)}
-                    className="w-full p-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-slate-800 dark:text-slate-200 outline-none focus:border-blue-400 resize-none h-16 text-sm mb-2"
+                    className="w-full p-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-black dark:text-slate-200 outline-none focus:border-blue-400 resize-none h-16 text-sm mb-2"
                   />
                   {q.qType === 'text' ? (
                     <div className="bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 rounded-xl p-2 flex items-center">
                       <b className="text-indigo-800 dark:text-indigo-300 text-xs w-16 pl-2">ĐÁP ÁN:</b>
                       <input 
-                        className="flex-1 bg-transparent border-none font-bold text-indigo-900 dark:text-indigo-100 outline-none text-sm" 
+                        className="flex-1 bg-transparent border-none font-bold text-black dark:text-indigo-100 outline-none text-sm" 
                         value={q.correctText}
                         onChange={(e) => updateQData(i, 'correctText', e.target.value)}
                       />
@@ -659,7 +659,7 @@ export default function Game({ showToast }: GameProps) {
                           <input 
                             value={opt}
                             onChange={(e) => updateQData(i, 'opt', e.target.value, oIdx)}
-                            className="flex-1 bg-transparent border-none font-bold outline-none text-xs dark:text-slate-200" 
+                            className="flex-1 bg-transparent border-none font-bold outline-none text-xs text-black dark:text-slate-200" 
                           />
                         </div>
                       ))}
@@ -685,7 +685,7 @@ export default function Game({ showToast }: GameProps) {
 
       {/* JOIN SCREEN */}
       {screen === 'join' && (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-3 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <div className="flex flex-col items-center justify-start pt-20 min-h-[calc(100vh-64px)] p-3 bg-gradient-to-b from-blue-50 to-white dark:from-slate-900 dark:to-slate-950">
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 max-w-sm w-full text-center shadow-lg shadow-blue-100/50 dark:shadow-none">
             <div className="w-20 h-20 mx-auto mb-3 drop-shadow-sm animate-wiggle flex items-center justify-center">
               {render3DIcon(FLUENT_3D.backpack, "w-full h-full")}
@@ -698,14 +698,14 @@ export default function Game({ showToast }: GameProps) {
                 onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                 maxLength={6} 
                 placeholder="MÃ PHÒNG" 
-                className="w-full p-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-baloo text-xl font-black text-center tracking-[0.2em] outline-none focus:border-blue-500 focus:bg-white transition-colors dark:text-slate-100" 
+                className="w-full p-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-baloo text-xl font-black text-center tracking-[0.2em] outline-none focus:border-blue-500 focus:bg-white transition-colors text-black dark:text-slate-100" 
               />
               <input 
                 value={myName}
                 onChange={(e) => setMyName(e.target.value)}
                 maxLength={20} 
                 placeholder="Nhập tên em..." 
-                className="w-full p-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-medium text-sm text-center outline-none focus:border-blue-500 focus:bg-white transition-colors dark:text-slate-100" 
+                className="w-full p-3 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-medium text-sm text-center outline-none focus:border-blue-500 focus:bg-white transition-colors text-black dark:text-slate-100" 
               />
             </div>
             
@@ -719,7 +719,7 @@ export default function Game({ showToast }: GameProps) {
 
       {/* LOBBY */}
       {screen === 'lobby' && (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-4 text-center">
+        <div className="flex flex-col items-center justify-start pt-20 min-h-[calc(100vh-64px)] p-4 text-center">
           <div className="inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-full px-3 py-1 font-bold text-emerald-700 dark:text-emerald-400 mb-4 text-xs">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div> Đã kết nối
           </div>
@@ -770,7 +770,7 @@ export default function Game({ showToast }: GameProps) {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 overflow-hidden">
+          <div className="flex flex-1 overflow-hidden pt-10">
             <div className="w-60 p-3 border-r border-slate-200 dark:border-slate-700 flex flex-col gap-3 bg-white dark:bg-slate-800 shadow-[2px_0_10px_rgba(0,0,0,0.02)]">
               <div className="bg-violet-600 rounded-xl p-3 text-center text-white shadow-sm relative overflow-hidden">
                 <div className="text-[10px] font-bold uppercase tracking-wider mb-0.5 opacity-80">Mã Phòng</div>
@@ -898,7 +898,7 @@ export default function Game({ showToast }: GameProps) {
             </div>
           </div>
           
-          <div className="flex-1 p-3 max-w-xl mx-auto w-full overflow-y-auto flex flex-col">
+          <div className="flex-1 p-3 pt-20 max-w-xl mx-auto w-full overflow-y-auto flex flex-col">
             <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm flex flex-col flex-1 mb-3">
               <div className="text-[10px] font-bold text-slate-400 uppercase text-center mb-1.5">Câu {currentQ + 1}</div>
               <div className="font-baloo text-lg font-bold text-center text-slate-800 dark:text-slate-100 leading-snug mb-4 flex-1 flex items-center justify-center">
@@ -990,7 +990,7 @@ export default function Game({ showToast }: GameProps) {
               </button>
             </div>
           </div>
-          <div className="p-4 max-w-4xl mx-auto w-full flex-1 flex flex-col">
+          <div className="p-4 pt-20 max-w-4xl mx-auto w-full flex-1 flex flex-col">
             <div className="text-xs font-bold text-slate-400 uppercase text-center mb-2">Câu {currentQ + 1} / {questions.length}</div>
             <div className="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl p-6 font-baloo text-2xl md:text-3xl font-black text-center text-slate-800 dark:text-slate-100 leading-snug mb-6 shadow-sm flex items-center justify-center min-h-[150px] relative overflow-hidden">
               {questions[currentQ]?.q}

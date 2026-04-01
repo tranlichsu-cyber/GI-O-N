@@ -115,7 +115,7 @@ export default function App() {
     const savedDarkMode = localStorage.getItem('dark_mode') === 'true';
     setIsDarkMode(savedDarkMode);
     if (savedDarkMode) {
-      document.body.classList.add('dark-mode');
+      document.body.classList.add('dark');
     }
   }, []);
 
@@ -124,9 +124,9 @@ export default function App() {
     setIsDarkMode(newMode);
     localStorage.setItem('dark_mode', String(newMode));
     if (newMode) {
-      document.body.classList.add('dark-mode');
+      document.body.classList.add('dark');
     } else {
-      document.body.classList.remove('dark-mode');
+      document.body.classList.remove('dark');
     }
   };
 

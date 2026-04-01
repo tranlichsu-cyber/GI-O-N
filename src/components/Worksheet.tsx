@@ -157,7 +157,7 @@ export default function Worksheet({ showToast, hasApiKey, openKeySelector }: Wor
                 type="text" 
                 value={wsTitle}
                 onChange={(e) => setWsTitle(e.target.value)}
-                className="w-full p-3 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl outline-none text-sm font-medium focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 transition-all dark:text-slate-200" 
+                className="w-full p-3 border border-slate-300 dark:border-slate-600 bg-transparent rounded-xl outline-none text-sm font-medium focus:ring-2 focus:ring-emerald-100 focus:border-emerald-400 transition-all text-black dark:text-slate-200" 
                 placeholder="VD: Phiếu Ôn Tập Cuối Tuần 5" 
               />
             </div>
@@ -191,7 +191,7 @@ export default function Worksheet({ showToast, hasApiKey, openKeySelector }: Wor
 
             <div 
               ref={editorRef}
-              className="p-8 flex-grow outline-none max-w-none text-slate-800 dark:text-slate-200 text-sm overflow-y-auto bg-slate-50/30 dark:bg-slate-900/30"
+              className="p-8 flex-grow outline-none max-w-none text-black dark:text-slate-200 text-sm overflow-y-auto bg-slate-50/30 dark:bg-slate-900/30"
             >
               <div className="flex flex-col items-center justify-center h-full text-slate-400 mt-32">
                 <ScanLine className="w-12 h-12 mb-3 opacity-50" />

@@ -14,9 +14,17 @@
     transition: background-color 0.3s, color 0.3s;
   }
 
-  body.dark-mode {
+  body.dark {
     background-color: #0f172a;
     color: #f1f5f9;
+  }
+
+  input, textarea, select {
+    @apply text-black dark:text-slate-100;
+  }
+
+  ::placeholder {
+    @apply text-slate-400 dark:text-slate-500;
   }
 }
 
@@ -32,7 +40,7 @@
     box-shadow: inset 0 -2px 0 0 #2563eb;
   }
 
-  .dark-mode .nav-tab.active {
+  .dark .nav-tab.active {
     background-color: #3b82f6;
     color: #ffffff;
   }
@@ -54,7 +62,7 @@
     line-height: 1.6;
   }
 
-  .dark-mode .prose td, .dark-mode .prose th {
+  .dark .prose td, .dark .prose th {
     border-color: #475569;
   }
 
@@ -65,7 +73,7 @@
     text-align: left;
   }
 
-  .dark-mode .prose th {
+  .dark .prose th {
     background-color: #334155;
     color: #f8fafc;
   }
@@ -108,7 +116,7 @@
     padding-right: 36px;
   }
 
-  .dark-mode .chat-msg.ai {
+  .dark .chat-msg.ai {
     background-color: #1e293b;
     color: #f8fafc;
     border-color: #334155;
@@ -137,7 +145,7 @@
     font-family: var(--font-nunito);
   }
 
-  .dark-mode .game-theme {
+  .dark .game-theme {
     --bg: #0f172a;
     --surf: #1e293b;
     --card: #1e293b;
