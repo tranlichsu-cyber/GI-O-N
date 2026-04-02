@@ -133,6 +133,8 @@ export default function Game({ showToast }: GameProps) {
   const [showScratchOffModal, setShowScratchOffModal] = useState(false);
   const [wheelRotation, setWheelRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isBoxSpinning, setIsBoxSpinning] = useState(false);
+  const [boxWinner, setBoxWinner] = useState<any>(null);
 
   // Refs for intervals and listeners
   const timerIv = useRef<any>(null);
@@ -803,12 +805,21 @@ export default function Game({ showToast }: GameProps) {
               </div>
               
               <div className="flex flex-col gap-2">
-                <button className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 border border-amber-200 dark:border-amber-800 rounded-lg py-2 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors" onClick={() => setShowWheelModal(true)}>
-                  <div className="w-6 h-6 flex items-center justify-center">
-                    {render3DIcon(FLUENT_3D.ferris_wheel, "w-full h-full")}
-                  </div> 
-                  Quay gọi tên
-                </button>
+                {selectedGame?.type === 'offline_box' ? (
+                  <button className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 hover:bg-pink-200 border border-pink-200 dark:border-pink-800 rounded-lg py-2 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors" onClick={() => setShowBoxModal(true)}>
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      {render3DIcon(FLUENT_3D.gift, "w-full h-full")}
+                    </div> 
+                    Mở hộp quà
+                  </button>
+                ) : (
+                  <button className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-200 border border-amber-200 dark:border-amber-800 rounded-lg py-2 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors" onClick={() => setShowWheelModal(true)}>
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      {render3DIcon(FLUENT_3D.ferris_wheel, "w-full h-full")}
+                    </div> 
+                    Quay gọi tên
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1004,15 +1015,27 @@ export default function Game({ showToast }: GameProps) {
             )}
 
             <div className="flex flex-wrap justify-center gap-2 mb-6">
-              <button 
-                className="bg-violet-600 text-white py-3 px-6 rounded-xl text-lg font-bold shadow-[0_4px_0_#5b21b6] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-2"
-                onClick={() => setShowWheelModal(true)}
-              >
-                <div className="w-8 h-8 flex items-center justify-center">
-                  {render3DIcon(FLUENT_3D.ferris_wheel, "w-full h-full")}
-                </div> 
-                VÒNG QUAY
-              </button>
+              {selectedGame?.type === 'offline_box' ? (
+                <button 
+                  className="bg-pink-600 text-white py-3 px-6 rounded-xl text-lg font-bold shadow-[0_4px_0_#db2777] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-2"
+                  onClick={() => setShowBoxModal(true)}
+                >
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    {render3DIcon(FLUENT_3D.gift, "w-full h-full")}
+                  </div> 
+                  MỞ HỘP QUÀ
+                </button>
+              ) : (
+                <button 
+                  className="bg-violet-600 text-white py-3 px-6 rounded-xl text-lg font-bold shadow-[0_4px_0_#5b21b6] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-2"
+                  onClick={() => setShowWheelModal(true)}
+                >
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    {render3DIcon(FLUENT_3D.ferris_wheel, "w-full h-full")}
+                  </div> 
+                  VÒNG QUAY
+                </button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
@@ -1205,6 +1228,106 @@ export default function Game({ showToast }: GameProps) {
                 }}
               >
                 {isSpinning ? "ĐANG QUAY..." : "QUAY TÊN"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BOX MODAL */}
+      {showBoxModal && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
+            <div className="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                <div className="w-6 h-6 flex items-center justify-center">
+                  {render3DIcon(FLUENT_3D.gift, "w-full h-full")}
+                </div> 
+                Hộp Quà Bí Mật
+              </h3>
+              <button onClick={() => setShowBoxModal(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="p-8 flex flex-col items-center">
+              <div className="relative w-full h-64 flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-900 rounded-2xl mb-6 border-2 border-dashed border-slate-200 dark:border-slate-700">
+                {/* Center Indicator */}
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-pink-500 z-20 shadow-[0_0_10px_rgba(236,72,153,0.5)]"></div>
+                
+                <motion.div 
+                  animate={isBoxSpinning ? { x: [0, -1000] } : { x: 0 }}
+                  transition={isBoxSpinning ? { duration: 0.3, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
+                  className="flex gap-6 px-20"
+                >
+                  {(() => {
+                    const pList = isOffline ? offlineNames : Object.values(players);
+                    // Create a long list for animation effect
+                    const displayList = pList.length > 0 ? [...pList, ...pList, ...pList, ...pList, ...pList] : [];
+                    
+                    return displayList.map((p, i) => (
+                      <motion.div 
+                        key={i}
+                        className="flex flex-col items-center justify-center min-w-[140px]"
+                      >
+                        <div className="w-24 h-24 mb-2 flex items-center justify-center animate-bounce-subtle">
+                          {render3DIcon(FLUENT_3D.gift, "w-full h-full")}
+                        </div>
+                        <div className="bg-white dark:bg-slate-800 border-2 border-pink-200 dark:border-pink-900 rounded-lg px-3 py-1 font-bold text-sm text-pink-600 dark:text-pink-400 shadow-sm whitespace-nowrap">
+                          {(p as any).name}
+                        </div>
+                      </motion.div>
+                    ));
+                  })()}
+                </motion.div>
+              </div>
+              
+              <div className="h-16 flex items-center justify-center mb-4">
+                {boxWinner && !isBoxSpinning && (
+                  <motion.div 
+                    initial={{ scale: 0, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    className="flex flex-col items-center"
+                  >
+                    <div className="text-xs font-bold text-slate-400 uppercase mb-1">Chúc mừng học sinh</div>
+                    <div className="font-baloo text-3xl font-black text-pink-600 dark:text-pink-400 flex items-center gap-3">
+                      <div className="w-10 h-10 flex items-center justify-center">
+                        {render3DIcon(FLUENT_3D.party, "w-full h-full")}
+                      </div>
+                      {boxWinner.name}
+                      <div className="w-10 h-10 flex items-center justify-center">
+                        {render3DIcon(FLUENT_3D.party, "w-full h-full")}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+
+              <button 
+                disabled={isBoxSpinning}
+                className="w-full bg-pink-600 text-white py-4 rounded-2xl font-baloo text-xl font-black shadow-[0_6px_0_#be185d] hover:shadow-[0_4px_0_#be185d] hover:translate-y-[2px] active:translate-y-[6px] active:shadow-none transition-all disabled:opacity-50"
+                onClick={() => {
+                  const pList = isOffline ? offlineNames : Object.values(players);
+                  if (!pList.length) return showToast('Chưa có học sinh!', 'err');
+                  
+                  setIsBoxSpinning(true);
+                  setBoxWinner(null);
+                  playSound('countdown', muted);
+                  
+                  // Random duration between 2-4 seconds
+                  const duration = 2000 + Math.random() * 2000;
+                  
+                  setTimeout(() => {
+                    const winner = pList[Math.floor(Math.random() * pList.length)];
+                    setIsBoxSpinning(false);
+                    setBoxWinner(winner);
+                    playSound('success', muted);
+                    confetti({
+                      particleCount: 100,
+                      spread: 70,
+                      origin: { y: 0.7 }
+                    });
+                  }, duration);
+                }}
+              >
+                {isBoxSpinning ? "ĐANG CHẠY..." : "MỞ HỘP QUÀ"}
               </button>
             </div>
           </div>

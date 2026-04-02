@@ -280,6 +280,7 @@ export default function Planner({ showToast, hasApiKey, openKeySelector }: Plann
 
     QUY TẮC TỐI THƯỢNG (BẮT BUỘC): 
     - Trình bày chi tiết, ngôn ngữ sư phạm chuẩn mực.
+    - TRÒ CHƠI: Nếu đưa ra trò chơi khởi động hoặc luyện tập, TÊN TRÒ CHƠI và CÁCH CHƠI (luật chơi) phải hoàn toàn logic, phù hợp với nhau và phù hợp với lứa tuổi tiểu học.
     - KHI CÓ DỮ LIỆU GIÁO ÁN CŨ: Bạn đóng vai trò là người "Sao chép và Lồng ghép". Bạn PHẢI GIỮ NGUYÊN 100% NỘI DUNG, TỪNG CÂU CHỮ, DẤU CHẤM, DẤU PHẨY của giáo viên trong file cũ. 
     - TUYỆT ĐỐI KHÔNG ĐƯỢC: Tóm tắt, viết lại, sửa đổi câu từ, hay bỏ bớt bất kỳ thông tin nào từ file gốc. 
     - NHIỆM VỤ DUY NHẤT: Trích xuất văn bản gốc và CHÈN THÊM (lồng ghép) các nội dung Năng lực số/AI vào các vị trí phù hợp mà không làm thay đổi văn bản cũ.
