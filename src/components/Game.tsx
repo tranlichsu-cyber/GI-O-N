@@ -135,6 +135,7 @@ export default function Game({ showToast }: GameProps) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [isBoxSpinning, setIsBoxSpinning] = useState(false);
   const [boxWinner, setBoxWinner] = useState<any>(null);
+  const [highlightedBoxIdx, setHighlightedBoxIdx] = useState<number | null>(null);
 
   // Refs for intervals and listeners
   const timerIv = useRef<any>(null);
@@ -1248,35 +1249,46 @@ export default function Game({ showToast }: GameProps) {
               <button onClick={() => setShowBoxModal(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-8 flex flex-col items-center">
-              <div className="relative w-full h-64 flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-900 rounded-2xl mb-6 border-2 border-dashed border-slate-200 dark:border-slate-700">
-                {/* Center Indicator */}
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-pink-500 z-20 shadow-[0_0_10px_rgba(236,72,153,0.5)]"></div>
-                
-                <motion.div 
-                  animate={isBoxSpinning ? { x: [0, -1000] } : { x: 0 }}
-                  transition={isBoxSpinning ? { duration: 0.3, repeat: Infinity, ease: "linear" } : { duration: 0.5 }}
-                  className="flex gap-6 px-20"
-                >
+              <div className="w-full mb-6">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 w-full max-h-[350px] overflow-y-auto p-2 bg-slate-50 dark:bg-slate-900 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700">
                   {(() => {
                     const pList = isOffline ? offlineNames : Object.values(players);
-                    // Create a long list for animation effect
-                    const displayList = pList.length > 0 ? [...pList, ...pList, ...pList, ...pList, ...pList] : [];
+                    if (pList.length === 0) return <div className="col-span-full py-10 text-center text-slate-400 font-bold">Chưa có học sinh tham gia</div>;
                     
-                    return displayList.map((p, i) => (
+                    return pList.map((p, i) => (
                       <motion.div 
                         key={i}
-                        className="flex flex-col items-center justify-center min-w-[140px]"
+                        animate={highlightedBoxIdx === i ? { 
+                          scale: [1, 1.1, 1],
+                          rotate: [0, -5, 5, 0]
+                        } : { scale: 1, rotate: 0 }}
+                        transition={highlightedBoxIdx === i ? { duration: 0.2, repeat: Infinity } : { duration: 0.2 }}
+                        className={cn(
+                          "flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all relative overflow-hidden",
+                          highlightedBoxIdx === i 
+                            ? "bg-pink-100 dark:bg-pink-900/40 border-pink-500 shadow-md z-10" 
+                            : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 opacity-80"
+                        )}
                       >
-                        <div className="w-24 h-24 mb-2 flex items-center justify-center animate-bounce-subtle">
+                        {highlightedBoxIdx === i && (
+                          <div className="absolute inset-0 bg-pink-400/10 animate-pulse"></div>
+                        )}
+                        <div className={cn(
+                          "w-12 h-12 mb-1 flex items-center justify-center",
+                          highlightedBoxIdx === i ? "drop-shadow-md" : ""
+                        )}>
                           {render3DIcon(FLUENT_3D.gift, "w-full h-full")}
                         </div>
-                        <div className="bg-white dark:bg-slate-800 border-2 border-pink-200 dark:border-pink-900 rounded-lg px-3 py-1 font-bold text-sm text-pink-600 dark:text-pink-400 shadow-sm whitespace-nowrap">
+                        <div className={cn(
+                          "font-bold text-[9px] text-center truncate w-full",
+                          highlightedBoxIdx === i ? "text-pink-700 dark:text-pink-300" : "text-slate-500 dark:text-slate-400"
+                        )}>
                           {(p as any).name}
                         </div>
                       </motion.div>
                     ));
                   })()}
-                </motion.div>
+                </div>
               </div>
               
               <div className="h-16 flex items-center justify-center mb-4">
@@ -1309,13 +1321,30 @@ export default function Game({ showToast }: GameProps) {
                   
                   setIsBoxSpinning(true);
                   setBoxWinner(null);
+                  setHighlightedBoxIdx(null);
                   playSound('countdown', muted);
                   
-                  // Random duration between 2-4 seconds
-                  const duration = 2000 + Math.random() * 2000;
+                  let currentIdx = 0;
+                  let speed = 100;
+                  let timer: any;
+                  
+                  const run = () => {
+                    setHighlightedBoxIdx(currentIdx);
+                    currentIdx = (currentIdx + 1) % pList.length;
+                    timer = setTimeout(run, speed);
+                  };
+                  
+                  run();
+                  
+                  // Random duration between 3-5 seconds
+                  const duration = 3000 + Math.random() * 2000;
                   
                   setTimeout(() => {
-                    const winner = pList[Math.floor(Math.random() * pList.length)];
+                    clearTimeout(timer);
+                    const winnerIdx = Math.floor(Math.random() * pList.length);
+                    setHighlightedBoxIdx(winnerIdx);
+                    const winner = pList[winnerIdx] as any;
+                    
                     setIsBoxSpinning(false);
                     setBoxWinner(winner);
                     playSound('success', muted);
@@ -1327,7 +1356,7 @@ export default function Game({ showToast }: GameProps) {
                   }, duration);
                 }}
               >
-                {isBoxSpinning ? "ĐANG CHẠY..." : "MỞ HỘP QUÀ"}
+                {isBoxSpinning ? "ĐANG CHỌN..." : "MỞ HỘP QUÀ"}
               </button>
             </div>
           </div>
